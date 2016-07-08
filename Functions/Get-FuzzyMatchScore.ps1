@@ -20,8 +20,8 @@ function Get-FuzzyMatchScore {
     # score will be added for the match.
     $regexMatchFilter = $Search.ToCharArray() -join '.*?'
     $match = Select-String -InputObject $String -Pattern $regexMatchFilter -AllMatches
-    $matchLength = $match.Matches.Value.Length
-    $matchIndex = $match.Matches.Index
+    $matchLength = ($match.Matches | Sort-Object Length | Select-Object -First 1).Value.Length
+    $matchIndex = ($match.Matches | Sort-Object Length | Select-Object -First 1).Index
 
     # Calculate score
     $score = $score - $levenshteinDistance

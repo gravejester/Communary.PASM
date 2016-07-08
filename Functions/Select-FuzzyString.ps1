@@ -35,6 +35,8 @@ function Select-FuzzyString {
             # Do a quick search using wildcards
             if ($string -like $quickSearchFilter) {
 
+                Write-Verbose "Found match: $($string)"
+
                 if ($CalculateScore) {
 
                     # Get score of match
