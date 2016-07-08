@@ -10,7 +10,7 @@ function Get-LongestCommonSubstring {
             https://fuzzystring.codeplex.com/
             http://en.wikipedia.org/wiki/Longest_common_substring_problem
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .NOTES
             Adapted to PowerShell from code by Kevin Jones (https://fuzzystring.codeplex.com/)
             Author: Øyvind Kallstad

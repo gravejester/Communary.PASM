@@ -10,14 +10,14 @@ function Get-CommonPrefix {
             Will get the common prefix of both string. Should output 'car'.
         .LINK
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .INPUTS
             System.String
         .OUTPUTS
             System.String
         .NOTES
             Author: Øyvind Kallstad
-            Date: ?.?.2014
+            Date: 03.11.2014
             Version 1.1
             Dependencies: none
     #>

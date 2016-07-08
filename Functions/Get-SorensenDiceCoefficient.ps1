@@ -9,7 +9,7 @@ function Get-SorensenDiceCoefficient {
         .LINK
             http://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .NOTES
             Author: Øyvind Kallstad
             Date: 03.11.2014
@@ -21,7 +21,7 @@ function Get-SorensenDiceCoefficient {
         [Parameter(Position = 0, Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $String1,
- 
+
         [Parameter(Position = 1, Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $String2,

@@ -3,7 +3,7 @@ function Get-JaroWinklerDistance {
         .SYNOPSIS
             Get the Jaro-Winkler distance between two strings.
         .DESCRIPTION
-            The Jaro–Winkler distance (Winkler, 1990) is a measure of similarity between two strings. 
+            The Jaro–Winkler distance (Winkler, 1990) is a measure of similarity between two strings.
             It is a variant of the Jaro distance metric (Jaro, 1989, 1995), a type of string edit distance.
         .EXAMPLE
             Get-JaroDistance 'MARTHA' 'MARHTA' -Jaro
@@ -18,7 +18,7 @@ function Get-JaroWinklerDistance {
             http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance
             http://stackoverflow.com/questions/19123506/jaro-winkler-distance-algorithm-in-c-sharp
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .NOTES
             Adapted from code by leebickmtu posted to http://stackoverflow.com/questions/19123506/jaro-winkler-distance-algorithm-in-c-sharp
             Author: Øyvind Kallstad
@@ -33,7 +33,7 @@ function Get-JaroWinklerDistance {
         [Parameter(Position = 1)]
         [string] $String2,
 
-        # The Winkler modification will not be applied unless the percent match was at or above the mWeightThreshold percent without the modification. 
+        # The Winkler modification will not be applied unless the percent match was at or above the mWeightThreshold percent without the modification.
         # Winkler's paper used a default value of 0.7
         [Parameter()]
         [double] $WeightThreshold = 0.7,
@@ -64,10 +64,10 @@ function Get-JaroWinklerDistance {
 
     # two characters from string1 and string2 respectively, are considered matching only if they are the same and not farther than:
     $searchRange = ([Math]::Max($String1.Length,$String2.Length) / 2) - 1
-   
+
     $matched1 = New-Object 'Bool[]' $String1.Length
     $matched2 = New-Object 'Bool[]' $String2.Length
-    
+
     # calculate matching characters between the two strings
     $matchingCharacters = 0
     for ($i = 0; $i -lt $String1.Length; $i++) {
@@ -104,23 +104,23 @@ function Get-JaroWinklerDistance {
 
     else { # calculate Jaro-Winkler
 
-        if ($jaroDistance -le $WeightThreshold) { 
-            $output =  $jaroDistance 
+        if ($jaroDistance -le $WeightThreshold) {
+            $output =  $jaroDistance
         }
 
         # continue if Jaro Distance is greater than the weight threshold
-        else { 
+        else {
             $max = [Math]::Max($NumChars, ([Math]::Min($String1.Length,$String2.Length)))
             $position = 0
             while (($position -lt $max) -and ($String1[$position] -ceq $String2[$position])) { $position++ }
             if ($position -eq 0) {
                 $output =  $jaroDistance
             }
-            
+
             else {
                 $output =  ($jaroDistance + ($position * 0.1 * (1.0 - $jaroDistance)))
             }
-            
+
         }
     }
 

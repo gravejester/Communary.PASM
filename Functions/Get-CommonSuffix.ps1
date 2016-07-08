@@ -10,14 +10,14 @@ function Get-CommonSuffix {
             Will get the common suffix of both string. Should output 'ing'.
         .LINK
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .INPUTS
             System.String
         .OUTPUTS
             System.String
         .NOTES
             Author: Øyvind Kallstad
-            Date: ?.?.2014
+            Date: 03.11.2014
             Version 1.1
             Dependencies: Get-CommonPrefix
     #>

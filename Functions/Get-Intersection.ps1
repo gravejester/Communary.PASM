@@ -14,7 +14,7 @@ function Get-Intersection {
         .LINK
             https://en.wikipedia.org/wiki/Intersection_(set_theory)
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .INPUTS
             System.Array
             System.String

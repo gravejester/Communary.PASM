@@ -8,7 +8,7 @@ function Get-SorensenDiceDistance {
             Get-SorensenDiceDistance -String1 'night' -String2 'nacht'
         .LINK
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .NOTES
             Author: Øyvind Kallstad
             Date: 03.11.2014
@@ -20,7 +20,7 @@ function Get-SorensenDiceDistance {
         [Parameter(Position = 0, Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $String1,
- 
+
         [Parameter(Position = 1, Mandatory)]
         [ValidateNotNullOrEmpty()]
         [string] $String2,
@@ -29,6 +29,6 @@ function Get-SorensenDiceDistance {
         [Parameter()]
         [switch] $CaseSensitive
     )
- 
+
     Write-Output (1 - (Get-SorensenDiceCoefficient -String1 $String1 -String2 $String2 -CaseSensitive:$CaseSensitive))
 }

@@ -9,7 +9,7 @@ function Get-LongestCommonSubsequence {
         .LINK
             https://gallery.technet.microsoft.com/scriptcenter/Longest-common-subsequence-173c0f45
             http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .NOTES
             Author: Barry Chum
     #>

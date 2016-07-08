@@ -13,7 +13,7 @@ function Get-NGram {
         .LINK
             http://en.wikipedia.org/wiki/N-gram
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .INPUTS
             System.String
         .OUTPUTS

@@ -13,9 +13,16 @@ Add-Type -TypeDefinition @"
       SorensenDiceDistance,
       JaroDistance,
       JaroWinklerDistance,
-      LevenshteinDistance
+      LevenshteinDistance,
+      Fuzzy
    }
 "@
+
+Get-ChildItem -Path (Join-Path -Path $PSScriptRoot -ChildPath 'Functions') | ForEach-Object {
+    Get-ChildItem -Path $_.FullName | ForEach-Object {
+        . $_.FullName
+    }
+}
 
 function Get-PasmScore {
     [CmdletBinding()]
@@ -39,7 +46,7 @@ function Get-PasmScore {
         'OverlapCoefficient' {$score = ([Math]::Round((Get-OverlapCoefficient -String1 $String1 -String2 $String2 -CaseSensitive:$CaseSensitive) * 100))}
         'LongestCommonSubstring' {$score = ([Math]::Round(((Get-LongestCommonSubstring -String1 $String1 -String2 $String2 -CaseSensitive:$CaseSensitive).Length / [Math]::Min($String1.Length,$String2.Length)) * 100))}
         'LongestCommonSubsequence' {$score = ([Math]::Round((((Get-LongestCommonSubsequence -String1 $String1 -String2 $String2 -CaseSensitive:$CaseSensitive).count) / ([Math]::Min($String1.Length,$String2.Length))) * 100))}
-        'Soundex' {if (Compare-Soundex -String1 $String1 -String2 $String2) {$score = 100} else {$score = 0}} 
+        'Soundex' {if (Compare-Soundex -String1 $String1 -String2 $String2) {$score = 100} else {$score = 0}}
         'HammingDistance' {$score = ([Math]::Round((Get-HammingDistanceEx -String1 $String1 -String2 $String2 -NormalizeOutput -CaseSensitive:$CaseSensitive) * 100))}
         'RatcliffObershelpSimilarity' {$score = ([Math]::Round((Get-RatcliffObershelpSimilarity -String1 $String1 -String2 $String2 -CaseSensitive:$CaseSensitive) * 100))}
         'JaccardIndex' {$score = ([Math]::Round((Get-JaccardIndex -String1 $String1 -String2 $String2 -CaseSensitive:$CaseSensitive) * 100))}

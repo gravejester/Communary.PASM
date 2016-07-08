@@ -9,7 +9,7 @@ function Compare-Soundex {
             Will return True
         .LINK
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .INPUTS
             System.String
         .OUTPUTS

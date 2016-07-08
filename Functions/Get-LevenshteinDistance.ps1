@@ -10,7 +10,7 @@ function Get-LevenshteinDistance {
             http://en.wikibooks.org/wiki/Algorithm_Implementation/Strings/Levenshtein_distance#C.23
             http://en.wikipedia.org/wiki/Edit_distance
             https://communary.wordpress.com/
-            https://github.com/gravejester/Communary.ToolBox
+            https://github.com/gravejester/Communary.PASM
         .NOTES
             Author: Øyvind Kallstad
             Date: 07.11.2014
@@ -19,7 +19,7 @@ function Get-LevenshteinDistance {
     [CmdletBinding()]
     param(
         [Parameter(Position = 0)]
-        [string]$String1, 
+        [string]$String1,
 
         [Parameter(Position = 1)]
         [string]$String2,
@@ -37,18 +37,18 @@ function Get-LevenshteinDistance {
         $String1 = $String1.ToLowerInvariant()
         $String2 = $String2.ToLowerInvariant()
     }
- 
+
     $d = New-Object 'Int[,]' ($String1.Length + 1), ($String2.Length + 1)
-        
+
     try {
         for ($i = 0; $i -le $d.GetUpperBound(0); $i++) {
             $d[$i,0] = $i
         }
- 
+
         for ($i = 0; $i -le $d.GetUpperBound(1); $i++) {
             $d[0,$i] = $i
         }
- 
+
         for ($i = 1; $i -le $d.GetUpperBound(0); $i++) {
             for ($j = 1; $j -le $d.GetUpperBound(1); $j++) {
                 $cost = [Convert]::ToInt32((-not($String1[$i-1] -ceq $String2[$j-1])))
@@ -60,16 +60,16 @@ function Get-LevenshteinDistance {
         }
 
         $distance = ($d[$d.GetUpperBound(0),$d.GetUpperBound(1)])
- 
+
         if ($NormalizeOutput) {
             Write-Output (1 - ($distance) / ([Math]::Max($String1.Length,$String2.Length)))
         }
 
         else {
             Write-Output $distance
-        }   
+        }
     }
- 
+
     catch {
         Write-Warning $_.Exception.Message
     }
