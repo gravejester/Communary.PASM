@@ -1,3 +1,6 @@
+<#
+    2016// Øyvind Kallstad (@okallstad)
+#>
 function Compare-PasmAlgorithms {
     [CmdletBinding()]
     param (
