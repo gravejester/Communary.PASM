@@ -13,8 +13,7 @@ Add-Type -TypeDefinition @"
       SorensenDiceDistance,
       JaroDistance,
       JaroWinklerDistance,
-      LevenshteinDistance,
-      Fuzzy
+      LevenshteinDistance
    }
 "@
 
