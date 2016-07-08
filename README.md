@@ -12,18 +12,18 @@ All of the string matching algorithms are included as stand-alone functions, and
 There is also a helper function for comparing the included approximate string matching algorithms against each other.
 
 #### Approximate String Matching Algorithms
-- OverlapCoefficient
-- LongestCommonSubstring
-- LongestCommonSubsequence
-- HammingDistance
-- RatcliffObershelpSimilarity
-- JaccardIndex
-- JaccardDistance
-- SorensenDiceCoefficient
-- SorensenDiceDistance
-- JaroDistance
-- JaroWinklerDistance
-- LevenshteinDistance
+- Overlap Coefficient
+- Longest Common Substring
+- Longest Common Subsequence
+- Hamming Distance
+- Ratcliff/Obershelp Similarity
+- Jaccard Index
+- Jaccard Distance
+- Sorensen-Dice Coefficient
+- Sorensen-Dice Distance
+- Jaro Distance
+- Jaro-Winkler Distance
+- Levenshtein Distance
 
 #### Fuzzy Search Algorithm
 This algorithm is basically a wildcard search (where a wildcard is placed before and after each character in the search query), but additionally it will calculate a score according to a set of rules:
