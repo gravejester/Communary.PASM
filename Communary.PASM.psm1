@@ -16,30 +16,6 @@ Add-Type -TypeDefinition @"
       LevenshteinDistance
    }
 "@
- 
-function ConvertTo-SoundexNumber {
-    param([char]$Char)
- 
-    $a1 = @('B','F','P','V')
-    $a2 = @('C','G','J','K','Q','S','X','Z')
-    $a3 = @('D','T')
-    $a4 = @('L')
-    $a5 = @('M','N')
-    $a6 = @('R')
- 
-    # convert char to soundex number
-    switch ($Char) {
-        {$a1 -contains $_} {$soundexNumber = 1;break}
-        {$a2 -contains $_} {$soundexNumber = 2;break}
-        {$a3 -contains $_} {$soundexNumber = 3;break}
-        {$a4 -contains $_} {$soundexNumber = 4;break}
-        {$a5 -contains $_} {$soundexNumber = 5;break}
-        {$a6 -contains $_} {$soundexNumber = 6;break}
-        DEFAULT {$soundexNumber = 0}
-    }
- 
-    Write-Output $soundexNumber
-}
 
 function Get-PasmScore {
     [CmdletBinding()]
