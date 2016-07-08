@@ -35,3 +35,8 @@ This algorithm is basically a wildcard search (where a wildcard is placed before
 - The length of the index of the regex match is subtracted from the score
 - If a common prefix exists, the length of this is added to the score
 
+#### Installation
+[coming]
+
+#### How to used
+[coming]
