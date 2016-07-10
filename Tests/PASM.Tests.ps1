@@ -58,24 +58,24 @@ InModuleScope 'Communary.PASM' {
 
     Describe 'Select Functions' {
         It 'Select-FuzzySearch without scores' {
-            $countries = Import-Csv .\countries.csv | Select-Object -ExpandProperty Name
+            $countries = Import-Csv $PSScriptRoot\countries.csv | Select-Object -ExpandProperty Name
             $countries | Select-FuzzyString 'norw' -CalculateScore:$false | Should Be 'Norway'
             ($countries | Select-FuzzyString 'kingd' -CalculateScore:$false).Count | Should Be 2
         }
 
         It 'Select-FuzzySearch with scores' {
-            $countries = Import-Csv .\countries.csv | Select-Object -ExpandProperty Name
+            $countries = Import-Csv $PSScriptRoot\countries.csv | Select-Object -ExpandProperty Name
             ($countries | Select-FuzzyString 'norw').Result| Should Be 'Norway'
             ($countries | Select-FuzzyString 'norw').Score| Should Be 392
         }
 
         It 'Select-SoundexSearch' {
-            $names = Get-Content .\names.txt
+            $names = Get-Content $PSScriptRoot\names.txt
             ($names | Select-SoundexString 'Jon').Count | Should Be 4
         }
 
         It 'Select-ApproximateSearch' {
-            $countries = Import-Csv .\countries.csv | Select-Object -ExpandProperty Name
+            $countries = Import-Csv $PSScriptRoot\countries.csv | Select-Object -ExpandProperty Name
             $countries | Select-ApproximateString 'georigi' | Should Be 'Georgia'
         }
     }
