@@ -1,3 +1,5 @@
+[![Build status](https://ci.appveyor.com/api/projects/status/7g1i6atfevj7a29r/branch/master?svg=true)](https://ci.appveyor.com/project/gravejester/communary-pasm/branch/master)
+
 # Communary.PASM
 ## PowerShell Approximate String Matching
 
