@@ -42,5 +42,5 @@ If you have PowerShellGet, you can install it with:
 
 Else, you would have to download the zip from this repository and manually unpack it to one of the module paths on your system.
 
-#### How to used
-[coming]
+#### How to use
+All functions (should) have built-in help with examples of how to use them.
