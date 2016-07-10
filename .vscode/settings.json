@@ -1,0 +1,6 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "terminal.external.windowsExec": "powershell",
+    "terminal.integrated.shell.windows": "C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "files.trimTrailingWhitespace": true
+}
