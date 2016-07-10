@@ -1,3 +1,5 @@
+Import-Module $PSScriptRoot\..\Communary.PASM.psd1 -Force
+
 InModuleScope 'Communary.PASM' {
     Describe 'Approximate String Matching algorithms' {
         It 'Overlap Coefficient' {
