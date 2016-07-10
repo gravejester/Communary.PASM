@@ -1,0 +1,14 @@
+branches:
+  only:
+    - master
+
+skip_commits:
+  message: /updated readme.*/
+
+install:
+  - cinst pester -y
+
+build: off
+
+test_script:
+  - ps: . .\Tests\appveyor.pester.ps1 -Test -Finalize
