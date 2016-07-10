@@ -36,7 +36,11 @@ This algorithm is basically a wildcard search (where a wildcard is placed before
 - If a common prefix exists, the length of this is added to the score
 
 #### Installation
-[coming]
+If you have PowerShellGet, you can install it with:
+
+    Install-Module Communary.PASM
+
+Else, you would have to download the zip from this repository and manually unpack it to one of the module paths on your system.
 
 #### How to used
 [coming]
