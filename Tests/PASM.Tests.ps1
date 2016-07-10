@@ -46,6 +46,11 @@ Describe 'Approximate String Matching algorithms' {
     It 'Levenshtein Distance' {
         Get-LevenshteinDistance Pennsylvania Pencilvaneya | Should BeExactly 5
     }
+
+    It 'Soundex' {
+        Compare-Soundex 'Jon' 'John' | Should Be $true
+        Get-Soundex 'John' | Should Be 'J500'
+    }
 }
 
 Describe 'Select Functions' {
@@ -69,5 +74,23 @@ Describe 'Select Functions' {
     It 'Select-ApproximateSearch' {
         $countries = Import-Csv .\countries.csv | Select-Object -ExpandProperty Name
         $countries | Select-ApproximateString 'georigi' | Should Be 'Georgia'
+    }
+}
+
+Describe 'Misc' {
+    It 'Get-CommonPrefix' {
+        Get-CommonPrefix 'Card' 'Cartoon' | Should Be 'car'
+        Get-CommonPrefix 'Card' 'Cartoon' -CaseSensitive | Should Be 'Car'
+    }
+
+    It 'Get-CommonSuffix' {
+        Get-CommonSuffix 'Morning' 'Lasting' | Should Be 'ing'
+        Get-CommonSuffix 'Morning' 'Lasting' -CaseSensitive | Should Be 'ing'
+    }
+
+    It 'Get-FuzzyMatchScore' {
+        Get-FuzzyMatchScore 'Microsoft Corporation' 'soft' | Should Be 332
+        Get-FuzzyMatchScore 'Microsoft Corporation' 'Microsoft' | Should Be 801
+        Get-FuzzyMatchScore 'Microsoft Corporation' 'Microsoft Corporation' | Should Be 2100
     }
 }

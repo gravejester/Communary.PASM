@@ -39,7 +39,7 @@ function Select-SoundexString {
 
     PROCESS {
         foreach ($string in $Data) {
-            if ((Get-Soundex -String $string) -eq (Get-Soundex -String $Search)) {
+            if (Compare-Soundex $string $Search) {
                 Write-Output $string
             }
         }

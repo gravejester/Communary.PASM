@@ -6,7 +6,7 @@ function Get-CommonSuffix {
             This function will get the common suffix of two strings; that is, all
             the letters that they share, starting from the end of the strings.
         .EXAMPLE
-            Get-CommonPrefix 'Morning' 'Lasting'
+            Get-CommonSuffix 'Morning' 'Lasting'
             Will get the common suffix of both string. Should output 'ing'.
         .LINK
             https://communary.wordpress.com/

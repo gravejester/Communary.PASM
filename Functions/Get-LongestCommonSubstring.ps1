@@ -5,7 +5,7 @@ function Get-LongestCommonSubstring {
         .DESCRIPTION
             Get the longest common substring of two strings.
         .EXAMPLE
-            Get-LongestCommonSubstring -Source 'Karolin' -Target 'kathrin' -CaseSensitive
+            Get-LongestCommonSubstring 'Karolin' 'kathrin' -CaseSensitive
         .LINK
             https://fuzzystring.codeplex.com/
             http://en.wikipedia.org/wiki/Longest_common_substring_problem
