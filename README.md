@@ -12,18 +12,18 @@ All of the string matching algorithms are included as stand-alone functions, and
 There is also a helper function for comparing the included approximate string matching algorithms against each other.
 
 #### Approximate String Matching Algorithms
-- Overlap Coefficient
-- Longest Common Substring
-- Longest Common Subsequence
-- Hamming Distance
-- Ratcliff/Obershelp Similarity
-- Jaccard Index
-- Jaccard Distance
-- Sorensen-Dice Coefficient
-- Sorensen-Dice Distance
-- Jaro Distance
-- Jaro-Winkler Distance
-- Levenshtein Distance
+- [Overlap Coefficient](https://en.wikipedia.org/wiki/Overlap_coefficient)
+- [Longest Common Substring](https://en.wikipedia.org/wiki/Longest_common_substring_problem)
+- [Longest Common Subsequence](https://en.wikipedia.org/wiki/Longest_common_subsequence_problem)
+- [Hamming Distance](https://en.wikipedia.org/wiki/Hamming_distance)
+- [Ratcliff/Obershelp Similarity](http://collaboration.cmc.ec.gc.ca/science/rpn/biblio/ddj/Website/articles/DDJ/1988/8807/8807c/8807c.htm)
+- [Jaccard Index](https://en.wikipedia.org/wiki/Jaccard_index)
+- [Jaccard Distance](https://en.wikipedia.org/wiki/Jaccard_index)
+- [Sorensen-Dice Coefficient](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient)
+- [Sorensen-Dice Distance](https://en.wikipedia.org/wiki/S%C3%B8rensen%E2%80%93Dice_coefficient)
+- [Jaro Distance](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance)
+- [Jaro-Winkler Distance](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance)
+- [Levenshtein Distance](https://en.wikipedia.org/wiki/Levenshtein_distance)
 
 #### Fuzzy Search Algorithm
 This algorithm is basically a wildcard search (where a wildcard is placed before and after each character in the search query), but additionally it will calculate a score according to this set of rules:
