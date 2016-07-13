@@ -1,3 +1,13 @@
+os: "WMF 5"
+version: 1.0.{build}
+
+environment:
+  ModuleName: "Communary.PASM"
+  psGalleryKey:
+    secure: bsxEMSo9+lWrKb0usvlB8RtvGgFcVfV1XxLDjBmP5NwrFv5CHWXAxs2YGQrkJffc
+  githubKey:
+    secure: IXy+8vrDKX/XYOHF7izRRMC0/r+LFofjs1FPY4ZVyRzTzpwqZdMT8cbjJujzp5Wh
+
 branches:
   only:
     - master
@@ -11,4 +21,21 @@ install:
 build: off
 
 test_script:
-  - ps: . .\Tests\appveyor.pester.ps1 -Test -Finalize
+  - ps: |
+      Write-Host 'Running tests'
+      $testResults = '.\TestResults.xml'
+      $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResults -PassThru
+      Push-AppveyorArtifact $testResults
+      if ($res.FailedCount -gt 0) {
+          throw "$($res.FailedCount) tests failed."
+      }
+
+deploy_script:
+  - ps: |
+      if ((! $ENV:APPVEYOR_PULL_REQUEST_NUMBER) -and ($ENV:APPVEYOR_REPO_BRANCH -eq 'master')) {
+        Write-Host 'Publishing module to PowerShell Gallery'
+        [System.Version]$buildNumber = $env:APPVEYOR_BUILD_NUMBER
+        Update-ModuleManifest -Path ".\$($env:ModuleName).psd1"" -ModuleVersion $buildNumber
+        Get-PackageProvider -Name NuGet -ForceBootstrap
+        Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
+      }
