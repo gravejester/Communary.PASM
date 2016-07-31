@@ -42,7 +42,7 @@ function Select-ApproximateString {
         # Matching tolerance.
         [Parameter()]
         [ValidateSet('Strong','Normal','Weak')]
-        [string] $Tolerance = 'Strong',
+        [string] $Tolerance = 'Normal',
 
         # Makes matches case-sensitive. By default, matches are not case-sensitive.
         [Parameter()]
