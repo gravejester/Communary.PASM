@@ -35,14 +35,15 @@ deploy_script:
       if ((! $ENV:APPVEYOR_PULL_REQUEST_NUMBER) -and ($ENV:APPVEYOR_REPO_BRANCH -eq 'master')) {
         $ENV:PSModulePath += ";$($ENV:APPVEYOR_BUILD_FOLDER)"
         Write-Host "PS Module Path: $($env:psmodulepath)"
-        Import-Module $env:ModuleName -Force
+        #Import-Module $env:ModuleName -Force
         Write-Host 'Publishing module to PowerShell Gallery'
         Write-Host "AppVeyor Build Folder: $($ENV:APPVEYOR_BUILD_FOLDER)"
         #ls
         [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
         Update-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ModuleVersion $buildNumber
         Push-AppveyorArtifact ".\$($env:ModuleName).psd1"
-        Get-PackageProvider -Name NuGet -ForceBootstrap
-        Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
+        $null = Get-PackageProvider -Name NuGet -ForceBootstrap
+        get-module -ListAvailable
+        #Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
         #Publish-Module -Path "$($ENV:APPVEYOR_BUILD_FOLDER)\$($env:ModuleName).psd1" -NuGetApiKey $env:psGalleryKey
       }
