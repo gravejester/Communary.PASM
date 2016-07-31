@@ -76,7 +76,7 @@ InModuleScope 'Communary.PASM' {
 
         It 'Select-ApproximateSearch' {
             $countries = Import-Csv $PSScriptRoot\countries.csv | Select-Object -ExpandProperty Name
-            $countries | Select-ApproximateString 'georigi' | Should Be 'Georgia'
+            $countries | Select-ApproximateString 'georigi' -Tolerance Strong | Should Be 'Georgia'
         }
     }
 
