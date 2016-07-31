@@ -43,7 +43,7 @@ deploy_script:
         [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
         Update-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ModuleVersion $buildNumber
         Push-AppveyorArtifact ".\$($env:ModuleName).psd1"
-        $null = Copy-Item -Path . -Destination $env:ModuleName" -Recurse
+        $null = Copy-Item -Path . -Destination $env:ModuleName -Recurse
         $null = Get-PackageProvider -Name NuGet -ForceBootstrap
         get-module -ListAvailable
         #Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
