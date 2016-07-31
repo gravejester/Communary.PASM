@@ -51,5 +51,5 @@ deploy_script:
         #get-module -ListAvailable
         #Import-Module $env:ModuleName -Force
         #Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
-        Publish-Module "$($ENV:APPVEYOR_BUILD_FOLDER)\$($env:ModuleName).psd1" -NuGetApiKey $env:psGalleryKey
+        Publish-Module -Path $ENV:APPVEYOR_BUILD_FOLDER -NuGetApiKey $env:psGalleryKey
       }
