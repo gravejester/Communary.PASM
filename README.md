@@ -46,3 +46,5 @@ Else, you would have to download the zip from this repository and manually unpac
 
 #### How to use
 All functions (should) have built-in help with examples of how to use them.
+
+Also, check out Tests\examples.ps1 for a couple of examples.
