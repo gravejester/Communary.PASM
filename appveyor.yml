@@ -33,8 +33,8 @@ test_script:
 deploy_script:
   - ps: |
       if ((! $ENV:APPVEYOR_PULL_REQUEST_NUMBER) -and ($ENV:APPVEYOR_REPO_BRANCH -eq 'master')) {
-        $ENV:PSModulePath += ";$($ENV:APPVEYOR_BUILD_FOLDER)"
-        $null = New-Item -Path $env:ModuleName -Type directory
+        #$ENV:PSModulePath += ";$($ENV:APPVEYOR_BUILD_FOLDER)"
+        #$null = New-Item -Path $env:ModuleName -Type directory
         #Write-Host "PS Module Path: $($env:psmodulepath)"
         #Import-Module $env:ModuleName -Force
         Write-Host 'Publishing module to PowerShell Gallery'
@@ -43,10 +43,12 @@ deploy_script:
         [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
         Update-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ModuleVersion $buildNumber
         Push-AppveyorArtifact ".\$($env:ModuleName).psd1"
-        $null = Copy-Item "$($env:APPVEYOR_BUILD_FOLDER)\*.*" (Join-Path $env:APPVEYOR_BUILD_FOLDER $env:ModuleName) -Recurse -ErrorActione SilentlyContinue
+        Import-Module ".\$($env:ModuleName).psd1" -Force
+        Get-Module
+        #$null = Copy-Item "$($env:APPVEYOR_BUILD_FOLDER)\*.*" (Join-Path $env:APPVEYOR_BUILD_FOLDER $env:ModuleName) -Recurse -ErrorAction SilentlyContinue
         $null = Get-PackageProvider -Name NuGet -ForceBootstrap
         #get-module -ListAvailable
-        Import-Module $env:ModuleName -Force
-        Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
+        #Import-Module $env:ModuleName -Force
+        #Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
         #Publish-Module -Path "$($ENV:APPVEYOR_BUILD_FOLDER)\$($env:ModuleName).psd1" -NuGetApiKey $env:psGalleryKey
       }
