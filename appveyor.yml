@@ -43,7 +43,7 @@ deploy_script:
         [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
         Update-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ModuleVersion $buildNumber
         Push-AppveyorArtifact ".\$($env:ModuleName).psd1"
-        Get-Content ".\$($env:ModuleName).psd1"
+        #Get-Content ".\$($env:ModuleName).psd1"
         Import-Module ".\$($env:ModuleName).psd1" -Force
         #Get-Module
         #$null = Copy-Item "$($env:APPVEYOR_BUILD_FOLDER)\*.*" (Join-Path $env:APPVEYOR_BUILD_FOLDER $env:ModuleName) -Recurse -ErrorAction SilentlyContinue
@@ -51,5 +51,5 @@ deploy_script:
         #get-module -ListAvailable
         #Import-Module $env:ModuleName -Force
         #Publish-Module -Name $env:ModuleName -NuGetApiKey $env:psGalleryKey
-        Publish-Module -Path "$($ENV:APPVEYOR_BUILD_FOLDER)\$($env:ModuleName).psd1" -NuGetApiKey $env:psGalleryKey
+        Publish-Module "$($ENV:APPVEYOR_BUILD_FOLDER)\$($env:ModuleName).psd1" -NuGetApiKey $env:psGalleryKey
       }
