@@ -35,6 +35,8 @@ deploy_script:
       if ((! $ENV:APPVEYOR_PULL_REQUEST_NUMBER) -and ($ENV:APPVEYOR_REPO_BRANCH -eq 'master')) {
         #Import-Module ".\$($env:ModuleName).psd1" -Force
         Write-Host 'Publishing module to PowerShell Gallery'
+        Write-Host "AppVeyor Build Folder: $($ENV:APPVEYOR_BUILD_FOLDER)"
+        ls
         [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
         Update-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ModuleVersion $buildNumber
         Get-PackageProvider -Name NuGet -ForceBootstrap
