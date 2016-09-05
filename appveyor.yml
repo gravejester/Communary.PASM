@@ -3,10 +3,9 @@ version: 1.0.{build}
 
 environment:
   ModuleName: "Communary.PASM"
+  ScriptAnalyzerSeverity: "Error"
   psGalleryKey:
     secure: bsxEMSo9+lWrKb0usvlB8RtvGgFcVfV1XxLDjBmP5NwrFv5CHWXAxs2YGQrkJffc
-  githubKey:
-    secure: IXy+8vrDKX/XYOHF7izRRMC0/r+LFofjs1FPY4ZVyRzTzpwqZdMT8cbjJujzp5Wh
 
 branches:
   only:
@@ -17,28 +16,83 @@ skip_commits:
 
 install:
   - cinst pester -y
+  - ps: Get-PackageProvider -Name NuGet -ForceBootstrap | Out-Null
+  - ps: Install-Module PsScriptAnalyzer -Force
 
 build: off
 
 test_script:
   - ps: |
-      Write-Host 'Running tests'
+      Write-Host 'Running Pester tests'
+      Add-AppveyorTest -Name "Pester" -Outcome Running
       $testResults = '.\TestResults.xml'
       $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResults -PassThru
       Push-AppveyorArtifact $testResults
       if ($res.FailedCount -gt 0) {
+          Add-AppveyorMessage -Message "Pester: $($res.FailedCount) tests failed." -Category Error
+          Update-AppveyorTest -Name 'Pester' -Outcome Failed -ErrorMessage "$($res.FailedCount) tests failed."
           throw "$($res.FailedCount) tests failed."
+      }
+      else {
+          Update-AppveyorTest -Name 'Pester' -Outcome Passed
+      }
+      Add-AppveyorTest -Name 'CodeCoverage' -Outcome Running
+      $codeCoverage = Invoke-Pester -CodeCoverage (Get-ChildItem *.ps*1 -Recurse) -PassThru
+      $codeCoveragePercent = (($codeCoverage.CodeCoverage.NumberOfCommandsExecuted) / ($codeCoverage.CodeCoverage.NumberOfCommandsAnalyzed)) * 100
+      Add-AppveyorMessage -Message "Code Coverage: $($codeCoveragePercent)%" -Category Information
+      Update-AppveyorTest -Name 'CodeCoverage' -Outcome Passed
+      Write-Host 'Running Script Analyzer'
+      Add-AppveyorTest -Name "ScriptAnalyzer" -Outcome Running
+      $res = Get-ChildItem *.ps*1 -Recurse | Invoke-ScriptAnalyzer -Severity $env:ScriptAnalyzerSeverity
+      if ($res) {
+          $resultString = $res | Out-String
+          Write-Warning $resultString
+          Add-AppveyorMessage -Message "ScriptAnalyzer reported problems." -Category Error
+          Update-AppveyorTest -Name 'ScriptAnalyzer' -Outcome Failed -ErrorMessage $resultString
+          throw 'Tests failed'
+      }
+      else {
+          Update-AppveyorTest -Name "ScriptAnalyzer" -Outcome Passed
       }
 
 deploy_script:
   - ps: |
       if ((! $ENV:APPVEYOR_PULL_REQUEST_NUMBER) -and ($ENV:APPVEYOR_REPO_BRANCH -eq 'master')) {
         Write-Host 'Publishing module to PowerShell Gallery'
-        $null = New-Item -Path $env:ModuleName -Type directory
         [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
-        Update-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ModuleVersion $buildNumber
-        Push-AppveyorArtifact ".\$($env:ModuleName).psd1"
-        $null = Copy-Item "$($env:APPVEYOR_BUILD_FOLDER)\*.*" (Join-Path $env:APPVEYOR_BUILD_FOLDER $env:ModuleName) -Recurse -ErrorAction SilentlyContinue
-        $null = Get-PackageProvider -Name NuGet -ForceBootstrap
-        Publish-Module -Path (Join-Path $ENV:APPVEYOR_BUILD_FOLDER $env:ModuleName) -NuGetApiKey $env:psGalleryKey
+        $manifest = Import-LocalizedData -FileName "$($env:ModuleName).psd1"
+        $manifestProperties = @{
+            Path = "$($env:APPVEYOR_BUILD_FOLDER)\$($env:moduleName).psd1"
+            RootModule = ".\$($env:moduleName).psm1"
+            Guid = $manifest.GUID
+            Author = $manifest.Author
+            CompanyName = $manifest.CompanyName
+            Copyright = $manifest.Copyright
+            Description = $manifest.Description
+            FunctionsToExport = $manifest.FunctionsToExport
+            AliasesToExport = $manifest.AliasesToExport
+            CmdletsToExport = $manifest.CmdletsToExport
+            ModuleVersion = $buildNumber
+        }
+        Remove-Item -Path ".\$($env:ModuleName).psd1" -Force
+        New-ModuleManifest @manifestProperties
+        Test-ModuleManifest -Path ".\$($env:ModuleName).psd1"
+        $moduleFiles = Get-ChildItem *
+        $moduleDirectory = New-Item -Path $env:ModuleName -Type Directory
+        Copy-Item -Path $moduleFiles -Destination $moduleDirectory -Recurse
+        $publishProperties = @{
+            Path = $moduleDirectory
+            NuGetApiKey = $env:psGalleryKey
+            Tags = $manifest.PrivateData.PSData.Tags
+            ProjectUri = $manifest.PrivateData.PSData.ProjectUri
+            LicenseUri = $manifest.PrivateData.PSData.LicenseUri
+            Verbose = $true
+        }
+        try {
+            Publish-Module @publishProperties
+        }
+        catch {
+            Write-Warning $_.Exception.Message
+            throw 'Deploy failed.'
+        }
       }
