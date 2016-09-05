@@ -47,7 +47,7 @@ test_script:
       $codeCoveragePercent = (($codeCoverage.CodeCoverage.NumberOfCommandsExecuted) / ($codeCoverage.CodeCoverage.NumberOfCommandsAnalyzed)) * 100
       $end = Get-Date
       [TimeSpan]$duration = $end - $start
-      Add-AppveyorMessage -Message "Code Coverage: $($codeCoveragePercent)%" -Category Information
+      Add-AppveyorMessage -Message "Code Coverage: $("{0:N2}" -f $codeCoveragePercent)%" -Category Information
       Update-AppveyorTest -Name 'CodeCoverage' -Outcome Passed -Duration ([long]$duration.TotalMilliseconds)
       #--------------------#
       #   ScriptAnalyzer   #
