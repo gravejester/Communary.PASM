@@ -28,7 +28,7 @@ test_script:
       #--------------------#
       Add-AppveyorTest -Name "Pester" -Outcome Running
       $testResults = '.\TestResults.xml'
-      $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResults -PassThru
+      $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResults -CodeCoverage (Get-ChildItem *.ps*1 -Recurse) -PassThru
       Push-AppveyorArtifact $testResults
       if ($res.FailedCount -gt 0) {
           Add-AppveyorMessage -Message "Pester: $($res.FailedCount) tests failed." -Category Error
@@ -37,18 +37,9 @@ test_script:
       }
       else {
           Update-AppveyorTest -Name 'Pester' -Outcome Passed -Duration ([long]$res.Time.TotalMilliseconds)
+          $codeCoveragePercent = (($res.CodeCoverage.NumberOfCommandsExecuted) / ($res.CodeCoverage.NumberOfCommandsAnalyzed)) * 100
+          Add-AppveyorMessage -Message "Code Coverage: $("{0:N2}" -f $codeCoveragePercent)%" -Category Information
       }
-      #--------------------#
-      #    CodeCoverage    #
-      #--------------------#
-      Add-AppveyorTest -Name 'CodeCoverage' -Outcome Running
-      $start = Get-Date
-      $codeCoverage = Invoke-Pester -CodeCoverage (Get-ChildItem *.ps*1 -Recurse) -PassThru
-      $codeCoveragePercent = (($codeCoverage.CodeCoverage.NumberOfCommandsExecuted) / ($codeCoverage.CodeCoverage.NumberOfCommandsAnalyzed)) * 100
-      $end = Get-Date
-      [TimeSpan]$duration = $end - $start
-      Add-AppveyorMessage -Message "Code Coverage: $("{0:N2}" -f $codeCoveragePercent)%" -Category Information
-      Update-AppveyorTest -Name 'CodeCoverage' -Outcome Passed -Duration ([long]$duration.TotalMilliseconds)
       #--------------------#
       #   ScriptAnalyzer   #
       #--------------------#
