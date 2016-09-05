@@ -21,26 +21,6 @@ install:
 
 build: off
 
-before_test:
-  - ps: |
-      [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
-      $manifest = Import-LocalizedData -FileName "$($env:ModuleName).psd1"
-      $manifestProperties = @{
-          Path = "$($env:APPVEYOR_BUILD_FOLDER)\$($env:moduleName).psd1"
-          RootModule = ".\$($env:moduleName).psm1"
-          Guid = $manifest.GUID
-          Author = $manifest.Author
-          CompanyName = $manifest.CompanyName
-          Copyright = $manifest.Copyright
-          Description = $manifest.Description
-          FunctionsToExport = $manifest.FunctionsToExport
-          AliasesToExport = $manifest.AliasesToExport
-          CmdletsToExport = $manifest.CmdletsToExport
-          ModuleVersion = $buildNumber
-      }
-      Remove-Item -Path ".\$($env:ModuleName).psd1" -Force
-      New-ModuleManifest @manifestProperties
-
 test_script:
   - ps: |
       #--------------------#
@@ -78,26 +58,28 @@ test_script:
       else {
           Update-AppveyorTest -Name "ScriptAnalyzer" -Outcome Passed -Duration ([long]$duration.TotalMilliseconds)
       }
-      #--------------------#
-      #      Manifest      #
-      #--------------------#
-      Add-AppveyorTest -Name "Module Manifest" -Outcome Running
-      $start = Get-Date
-      try {
-          Test-ModuleManifest -Path ".\$($env:ModuleName).psd1" -ErrorAction Stop
-          $end = Get-Date
-          [TimeSpan]$duration = $end - $start
-          Update-AppveyorTest -Name "Module Manifest" -Outcome Passed -Duration ([long]$duration.TotalMilliseconds)
-      }
-      catch {
-          $end = Get-Date
-          [TimeSpan]$duration = $end - $start
-          Update-AppveyorTest -Name "Module Manifest" -Outcome Failed -ErrorMessage $_.Exception.Message -Duration ([long]$duration.TotalMilliseconds)
-      }
 
 deploy_script:
   - ps: |
       if ((! $ENV:APPVEYOR_PULL_REQUEST_NUMBER) -and ($ENV:APPVEYOR_REPO_BRANCH -eq 'master')) {
+        [System.Version]$buildNumber = $env:APPVEYOR_BUILD_VERSION
+        $manifest = Import-LocalizedData -FileName "$($env:ModuleName).psd1"
+        $manifestProperties = @{
+            Path = "$($env:APPVEYOR_BUILD_FOLDER)\$($env:moduleName).psd1"
+            RootModule = ".\$($env:moduleName).psm1"
+            Guid = $manifest.GUID
+            Author = $manifest.Author
+            CompanyName = $manifest.CompanyName
+            Copyright = $manifest.Copyright
+            Description = $manifest.Description
+            FunctionsToExport = $manifest.FunctionsToExport
+            AliasesToExport = $manifest.AliasesToExport
+            CmdletsToExport = $manifest.CmdletsToExport
+            ModuleVersion = $buildNumber
+        }
+        Remove-Item -Path ".\$($env:ModuleName).psd1" -Force
+        New-ModuleManifest @manifestProperties
+        Test-ModuleManifest -Path ".\$($env:ModuleName).psd1"
         $moduleFiles = Get-ChildItem *
         $moduleDirectory = New-Item -Path $env:ModuleName -Type Directory
         Copy-Item -Path $moduleFiles -Destination $moduleDirectory -Recurse
