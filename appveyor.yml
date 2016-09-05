@@ -23,7 +23,9 @@ build: off
 
 test_script:
   - ps: |
-      Write-Host 'Running Pester tests'
+      #--------------------#
+      #       Pester       #
+      #--------------------#
       Add-AppveyorTest -Name "Pester" -Outcome Running
       $testResults = '.\TestResults.xml'
       $res = Invoke-Pester -OutputFormat NUnitXml -OutputFile $testResults -PassThru
@@ -34,25 +36,36 @@ test_script:
           throw "$($res.FailedCount) tests failed."
       }
       else {
-          Update-AppveyorTest -Name 'Pester' -Outcome Passed
+          Update-AppveyorTest -Name 'Pester' -Outcome Passed -Duration ([long]$res.Time.TotalMilliseconds)
       }
+      #--------------------#
+      #    CodeCoverage    #
+      #--------------------#
       Add-AppveyorTest -Name 'CodeCoverage' -Outcome Running
+      $start = Get-Date
       $codeCoverage = Invoke-Pester -CodeCoverage (Get-ChildItem *.ps*1 -Recurse) -PassThru
       $codeCoveragePercent = (($codeCoverage.CodeCoverage.NumberOfCommandsExecuted) / ($codeCoverage.CodeCoverage.NumberOfCommandsAnalyzed)) * 100
+      $end = Get-Date
+      [TimeSpan]$duration = $end - $start
       Add-AppveyorMessage -Message "Code Coverage: $($codeCoveragePercent)%" -Category Information
-      Update-AppveyorTest -Name 'CodeCoverage' -Outcome Passed
-      Write-Host 'Running Script Analyzer'
+      Update-AppveyorTest -Name 'CodeCoverage' -Outcome Passed -Duration ([long]$duration.TotalMilliseconds)
+      #--------------------#
+      #   ScriptAnalyzer   #
+      #--------------------#
       Add-AppveyorTest -Name "ScriptAnalyzer" -Outcome Running
+      $start = Get-Date
       $res = Get-ChildItem *.ps*1 -Recurse | Invoke-ScriptAnalyzer -Severity $env:ScriptAnalyzerSeverity
+      $end = Get-Date
+      [TimeSpan]$duration = $end - $start
       if ($res) {
           $resultString = $res | Out-String
           Write-Warning $resultString
           Add-AppveyorMessage -Message "ScriptAnalyzer reported problems." -Category Error
-          Update-AppveyorTest -Name 'ScriptAnalyzer' -Outcome Failed -ErrorMessage $resultString
+          Update-AppveyorTest -Name 'ScriptAnalyzer' -Outcome Failed -ErrorMessage $resultString -Duration -Duration ([long]$duration.TotalMilliseconds)
           throw 'Tests failed'
       }
       else {
-          Update-AppveyorTest -Name "ScriptAnalyzer" -Outcome Passed
+          Update-AppveyorTest -Name "ScriptAnalyzer" -Outcome Passed -Duration -Duration ([long]$duration.TotalMilliseconds)
       }
 
 deploy_script:
