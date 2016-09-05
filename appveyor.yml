@@ -61,11 +61,11 @@ test_script:
           $resultString = $res | Out-String
           Write-Warning $resultString
           Add-AppveyorMessage -Message "ScriptAnalyzer reported problems." -Category Error
-          Update-AppveyorTest -Name 'ScriptAnalyzer' -Outcome Failed -ErrorMessage $resultString -Duration -Duration ([long]$duration.TotalMilliseconds)
+          Update-AppveyorTest -Name 'ScriptAnalyzer' -Outcome Failed -ErrorMessage $resultString -Duration ([long]$duration.TotalMilliseconds)
           throw 'Tests failed'
       }
       else {
-          Update-AppveyorTest -Name "ScriptAnalyzer" -Outcome Passed -Duration -Duration ([long]$duration.TotalMilliseconds)
+          Update-AppveyorTest -Name "ScriptAnalyzer" -Outcome Passed -Duration ([long]$duration.TotalMilliseconds)
       }
 
 deploy_script:
