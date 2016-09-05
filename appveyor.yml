@@ -83,12 +83,14 @@ deploy_script:
         $moduleFiles = Get-ChildItem *
         $moduleDirectory = New-Item -Path $env:ModuleName -Type Directory
         Copy-Item -Path $moduleFiles -Destination $moduleDirectory -Recurse
+        $releaseNotes = $env:APPVEYOR_REPO_COMMIT_MESSAGE + '`n' + $env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED
         $publishProperties = @{
             Path = $moduleDirectory
             NuGetApiKey = $env:psGalleryKey
             Tags = $manifest.PrivateData.PSData.Tags
             ProjectUri = $manifest.PrivateData.PSData.ProjectUri
             LicenseUri = $manifest.PrivateData.PSData.LicenseUri
+            ReleaseNotes = $releaseNotes
             Verbose = $false
         }
         try {
