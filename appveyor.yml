@@ -83,7 +83,7 @@ deploy_script:
         $moduleFiles = Get-ChildItem *
         $moduleDirectory = New-Item -Path $env:ModuleName -Type Directory
         Copy-Item -Path $moduleFiles -Destination $moduleDirectory -Recurse
-        $releaseNotes = $env:APPVEYOR_REPO_COMMIT_MESSAGE + '`n' + $env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED
+        [string]$releaseNotes = $env:APPVEYOR_REPO_COMMIT_MESSAGE + '`n' + $env:APPVEYOR_REPO_COMMIT_MESSAGE_EXTENDED
         Write-Host $releaseNotes
         $publishProperties = @{
             Path = $moduleDirectory
