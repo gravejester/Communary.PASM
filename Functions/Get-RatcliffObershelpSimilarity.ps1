@@ -65,7 +65,7 @@ function Get-RatcliffObershelpSimilarity {
         while ($stack.Count -ne 0) {
 
             # clean slate - just in case ;)
-            Remove-Variable -Name String1,String2,rightString1,rightString2,leftString1,leftString2,lcs -ErrorAction 'SilentlyContinue'
+            Get-Variable -Include String1,String2,rightString1,rightString2,leftString1,leftString2,lcs | Remove-Variable
 
             # pop the first two items from the stack
             if ($stack.Count -gt 0) {
