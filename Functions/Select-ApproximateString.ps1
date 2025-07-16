@@ -59,7 +59,7 @@ function Select-ApproximateString {
 
     PROCESS {
         foreach ($string in $Data) {
-            $pasmScore = Get-PasmScore -String1 $Search -String2 $string -CaseSensitive:$CaseSensitive
+            $pasmScore = Get-PasmScore -String1 $Search -String2 $string -Algorithm $Algorithm -CaseSensitive:$CaseSensitive
             if ($pasmScore -ge $toleranceValue) {
                 Write-Output $string
             }
